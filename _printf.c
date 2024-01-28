@@ -42,7 +42,6 @@ int _printf(const char *format, ...)
 						{
 							s = "(null)";
 						}
-
 						while (*s != '\0')
 						{
 							write(1, s, 1);
@@ -50,6 +49,17 @@ int _printf(const char *format, ...)
 							s++;
 						}
 					}
+					break;
+				case 'd':
+				case 'i':
+                                        {
+                                                int d = va_arg(args, int);
+                                                char buffer[20];
+
+                                                sprintf(buffer, "%d", d);
+                                                write(1, buffer, strlen(buffer));
+                                                count += strlen(buffer);
+                                        }
 					break;
 				case '%':
 					{
