@@ -13,7 +13,7 @@ int _printf(const char *format, ...)
 	va_list args;
 
 	va_start(args, format);
-	if (format)
+	if (format != NULL || strlen(format) != 0)
 	{
 	while (*format != '\0')
 	{
@@ -78,6 +78,11 @@ int _printf(const char *format, ...)
 		}
 		format++;
 	}
+	}
+	else
+	{
+		fprintf(stderr, "Invalid format string: %s\n", format);
+		exit(1);
 	}
 	va_end(args);
 	return (count);
