@@ -36,6 +36,10 @@ int _printf(const char *format, ...)
 				case 's':
 					{
 						char *s = va_arg(args, char *);
+						if (s == NULL)
+						{
+							s = "(null)";
+						}
 
 						while (*s != '\0')
 						{
