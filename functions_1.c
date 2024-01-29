@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "holberton.h"
+#include "main.h"
 #include <stdarg.h>
 /**
  * prints - Function to print strings.
