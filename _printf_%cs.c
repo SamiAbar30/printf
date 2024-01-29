@@ -50,17 +50,7 @@ int _printf(const char *format, ...)
 						}
 					}
 					break;
-				case 'd':
-				case 'i':
-                                        {
-                                                int d = va_arg(args, int);
-                                                char buffer[20];
 
-                                                sprintf(buffer, "%d", d);
-                                                write(1, buffer, strlen(buffer));
-                                                count += strlen(buffer);
-                                        }
-					break;
 				case '%':
 					{
 						write(1, "%", 1);
