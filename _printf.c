@@ -1,63 +1,48 @@
+#include <stdio.h>
 #include "main.h"
+#include <stdarg.h>
 /**
- * _printf - the number of characters printed.
- * @format: is a character string.
- * @...: A variable number of parameters to calculate the sum of.
- *
- * Return: counter for the number of characters written
+ * _printf - funtion to print according to format c, s, i, f, d
+ * @format: input format to print
+ * Return: integer to check what is
  */
 int _printf(const char *format, ...)
 {
+	va_list valist;
+	int b = 0, c = 0, d = 0, cuenf = 0, len = 0, e = 0;
+	formatico ops[] = {
+		{"c", printch}, {"s", prints}, {"i", printdi},
+		{"d", printdi}, {"%", printper}, {"b", printbi},
+		{"r", printrev}, {"R", printrot}
+	};
 
-	int count = 0;
-
-	va_list args;
-
-	va_start(args, format);
-
-	if (format != NULL || strlen(format) != 0)
+	va_start(valist, format);
+	if (format == NULL)
+		return (-1);
+	while (format != NULL && format[b] != 0)
 	{
-	while (*format != '\0')
-	{
-		if (*format != '%')
+		c = 0;
+		if (format[b] == '%')
 		{
-			write(1, format, 1);
-			count++;
-		}
-		else
-		{
-			format++;
-			switch (*format)
+			for (d = 0; d < 8; d++)
 			{
-				case 'd':
-				case 'i':
-					{
-						int d = va_arg(args, int);
-						char buffer[20];
-
-						sprintf(buffer, "%d", d);
-
-						write(1, buffer, strlen(buffer));
-						count += strlen(buffer);
-					}
-						break;
-				default:
-					{
-						write(2, "Invalid format specifier: %", 27);
-						write(2, format, 1);
-						write(2, "\n", 1);
-						return (-1);
-					}
+				if (format[b + 1] == 0)
+					return (-1);
+				if (format[b + 1] == *(ops[d].forma))
+				{
+					cuenf = cuenf + ops[d].f(valist);
+					c = 2;
+					e = e + 2;
+					b = b + 1;
+					break;
+				}
 			}
 		}
-		format++;
+		if (c == 0)
+			_putchar(format[b]);
+		b = b + 1;
 	}
-	}
-	else
-	{
-		fprintf(stderr, "Invalid format string: %s\n", format);
-		exit(1);
-	}
-	va_end(args);
-	return (count);
+	len = b + cuenf - e;
+	va_end(valist);
+	return (len);
 }
