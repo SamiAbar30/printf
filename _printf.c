@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "holberton.h"
+#include "main.h"
 #include <stdarg.h>
 /**
  * _printf - funtion to print according to format c, s, i, f, d
