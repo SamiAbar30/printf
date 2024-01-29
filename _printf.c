@@ -1,50 +1,90 @@
 #include "main.h"
-
-int _printf(const char *format, ...);
+/**
+ * _printf - the number of characters printed.
+ * @format: is a character string.
+ * @...: A variable number of paramters to calculate the sum of.
+ *
+ * Return: counter for the number of characters written
+ */
+int _printf(const char *format, ...)
 {
-	int num_chara_print = 0;
-	va_list list_of_arg;
+	int count = 0;
 
-	if (format == NULL)
-		return (-1);
-	va_start(list_of_arg, format);
-	while (*format)
+	va_list args;
+
+	va_start(args, format);
+	if (format != NULL || strlen(format) != 0)
 	{
-		if (*format != '%')
-		{
-			write(1, format, 1);
-			num_chara_print++;
-		}
-		else
-		{
-			format++;
-			if (*format == '\0')
-				break;
-			if (*format == '%')
+		while (*format != '\0')
+	{
+			if (*format != '%')
 			{
 				write(1, format, 1);
-				num_chara_print++;
+				count++;
 			}
-			else if (*format == 'c')
+			else
 			{
-				char c = va_arg(list_of_arg, int);
-
-				write(1, &c, 1);
-				num_chara_print++;
-			}
-			else if (*format == 's')
+				format++;
+				switch (*format)
 			{
-				char *str = va_arg(list_of_arg, char*);
-				int str_len = 0
+				case 'c':
+				{
+					char c = (char)va_arg(args, int);
 
-				while (str[str_len] != '\0')
-				str_len++;
-				write(1, str, str_len);
-				num_chara_print += str_len;
+					write(1, &c, 1);
+					count++;
+				}
+					break;
+				case 's':
+				{
+						char *s = va_arg(args, char *);
+
+					if (s == NULL)
+					{
+						s = "(null)";
+					}
+					while (*s != '\0')
+					{
+						write(1, s, 1);
+						count++;
+						s++;
+					}
+				}
+					break;
+				case 'd':
+				case 'i':
+					{
+						int d = va_arg(args, int);
+						char buffer[20];
+
+						sprintf(buffer, "%d", d);
+						write(1, buffer, strlen(buffer));
+						count += strlen(buffer);
+					}
+					break;
+				case '%':
+					{
+						write(1, "%", 1);
+						count++;
+					}
+					break;
+				default:
+					{
+						write(2, "Invalid format specifier: %", 27);
+						write(2, format, 1);
+						write(2, "\n", 1);
+						return (-1);
+					}
 			}
 		}
-	format++;
+		format++;
 	}
-		va_end(list_of_arg);
-		return (num_chara_print);
+	}
+	else
+	{
+		fprintf(stderr, "Invalid format string: %s\n", format);
+		exit(1);
+	}
+	va_end(args);
+	return (count);
 }
